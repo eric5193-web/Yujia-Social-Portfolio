@@ -6,7 +6,7 @@
 <title>Hero Preview — Yujia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -406,7 +406,7 @@
   .about-photo.right-photo img  { object-position: center 62%; }
 
   .about-text {
-    max-width: 660px;
+    max-width: 960px;
     margin: 72px auto 0;
     text-align: center;
     padding: 0 40px;
@@ -824,7 +824,7 @@
   </div>
   <div class="about-text">
     <div class="about-eyebrow">About</div>
-    <p class="about-bio">Yujia is a content creator and Columbia-trained data engineer based in New York City. Through <em>East Meets Feed</em>, she documents the spaces between logic and light — the quiet hours, the golden streets, the museums that speak without words.</p>
+    <p class="about-bio">Yujia is a content creator and Fortune 10 Sr. Data Engineer based in New York City.<br>Through <em>East Meets Feed</em>, she documents the spaces between logic and light — the quiet hours, the golden streets, the museums that speak without words.</p>
   </div>
 </section>
 
@@ -846,15 +846,15 @@
       <div class="platform-handle fade-up" style="transition-delay:0.2s">@yujiaaa_xie</div>
       <div class="platform-stats">
         <div class="fade-up" style="transition-delay:0.3s">
-          <div class="stat-number" data-count="2355">0</div>
+          <div class="stat-number" id="ig-followers" data-count="2355">0</div>
           <div class="stat-label">Followers</div>
         </div>
         <div class="fade-up" style="transition-delay:0.4s">
-          <div class="stat-number" data-count="56">0</div>
+          <div class="stat-number" id="ig-posts" data-count="56">0</div>
           <div class="stat-label">Posts</div>
         </div>
         <div class="fade-up" style="transition-delay:0.5s">
-          <div class="stat-number" data-count="42.9" data-suffix="K">0</div>
+          <div class="stat-number" id="ig-views" data-count="42.9" data-suffix="K">0</div>
           <div class="stat-label">Monthly Views</div>
         </div>
       </div>
@@ -1076,6 +1076,70 @@
   }
 
   resetTimer();
+
+  // ── Instagram live metrics ──
+  const IG_USER = 'yujiaaa_xie';
+  const PROXIES = [
+    url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+    url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+    url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+  ];
+
+  async function fetchViaProxy(proxyFn, url, timeoutMs = 8000) {
+    const controller = new AbortController();
+    const tid = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(proxyFn(url), { signal: controller.signal });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      return data.contents ?? data;
+    } finally {
+      clearTimeout(tid);
+    }
+  }
+
+  async function fetchWithBackoff(proxyFn, url, maxRetries = 3, baseDelay = 800) {
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        return await fetchViaProxy(proxyFn, url);
+      } catch (e) {
+        if (attempt === maxRetries - 1) throw e;
+        const jitter = Math.random() * 200;
+        await new Promise(r => setTimeout(r, baseDelay * Math.pow(2, attempt) + jitter));
+      }
+    }
+  }
+
+  async function getIGStats() {
+    const url = `https://www.instagram.com/${IG_USER}/`;
+    for (const proxyFn of PROXIES) {
+      try {
+        const html = await fetchWithBackoff(proxyFn, url);
+        const followers = html.match(/"edge_followed_by":\{"count":(\d+)\}/)?.[1]
+                       ?? html.match(/"followers":(\d+)/)?.[1];
+        const posts     = html.match(/"edge_owner_to_timeline_media":\{"count":(\d+)\}/)?.[1]
+                       ?? html.match(/"posts":(\d+)/)?.[1];
+        if (followers) {
+          updateStat('ig-followers', parseInt(followers));
+          if (posts) updateStat('ig-posts', parseInt(posts));
+          return;
+        }
+      } catch (e) {
+        // try next proxy
+      }
+    }
+    // all proxies failed — silently keep hardcoded values
+  }
+
+  function updateStat(id, value) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.dataset.count = value;
+    // if already animated (visible), re-run countUp
+    if (el.textContent !== '0') countUp(el);
+  }
+
+  getIGStats();
 </script>
 </body>
 </html>
