@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero Preview — Yujia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #0f0f0f;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+  }
+
+  /* ── Nav ── */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 28px 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+  }
+
+  .nav-links a {
+    font-size: 10px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.35);
+    text-decoration: none;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: #c9a96e; }
+
+  /* ── Left panel ── */
+  .hero-left {
+    width: 42%;
+    flex-shrink: 0;
+    background: #0f0f0f;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 64px 56px;
+  }
+
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 1px; height: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(201,169,110,0.12) 35%, rgba(201,169,110,0.12) 65%, transparent);
+  }
+
+  /* ── Right panel ── */
+  .hero-right {
+    flex: 1;
+    position: relative;
+    background: #0a0a0a;
+    overflow: hidden;
+  }
+
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1.8s ease-in-out;
+  }
+
+  .hero-slide.active { opacity: 1; }
+
+  /* Street photo: Yujia is center-frame, shift slightly up to show face + full body */
+  .slide-1 {
+    background-image: url('Posts assets/RH guesthouse/IMG_3318.jpg');
+    background-position: center 52%;
+  }
+
+  /* Staircase photo: Yujia is center-right, prioritise her face downward */
+  .slide-2 {
+    background-image: url('Posts assets/RH guesthouse/IMG_8993.JPG');
+    background-position: 55% 15%;
+  }
+
+  /* ── Text ── */
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.22em;
+    color: #c9a96e;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: fadeUp 1s ease forwards 0.4s;
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(64px, 8vw, 96px);
+    font-weight: 300;
+    color: #ffffff;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 1s ease forwards 0.7s;
+  }
+
+  .hero-tagline {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: fadeUp 1s ease forwards 1s;
+  }
+
+  .hero-tagline-zh {
+    font-size: 11px;
+    color: #c9a96e;
+    letter-spacing: 0.12em;
+    font-weight: 300;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: fadeUp 1s ease forwards 1.2s;
+  }
+
+  /* ── Scroll indicator ── */
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    right: 40px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.8s;
+  }
+
+  .scroll-hint span {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 40px;
+    height: 1px;
+    background: rgba(255,255,255,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    left: -100%;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #c9a96e;
+    animation: scanline 2s ease-in-out infinite 2s;
+  }
+
+  /* ── Slide counter ── */
+  .slide-dots {
+    position: absolute;
+    bottom: 38px;
+    left: 72px;
+    z-index: 10;
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.8s;
+  }
+
+  .dot {
+    width: 20px;
+    height: 1px;
+    background: rgba(255,255,255,0.25);
+    transition: background 0.4s ease, width 0.4s ease;
+    cursor: pointer;
+  }
+
+  .dot.active {
+    width: 36px;
+    background: #c9a96e;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scanline {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  /* ── Video Section ── */
+  .video-section {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .vid-panel {
+    position: relative;
+    width: 50%;
+    overflow: hidden;
+    background: #080808;
+  }
+
+  /* Fade-to-black overlay */
+  .section-overlay {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out;
+    z-index: 20;
+  }
+
+  .section-overlay.blackout { opacity: 1; }
+
+  /* Divider line between panels */
+  .vid-panel.right-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 1px; height: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(201,169,110,0.12) 35%, rgba(201,169,110,0.12) 65%, transparent);
+    z-index: 10;
+  }
+
+  /* Videos */
+  .vid-item {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+  }
+
+  /* Text panels */
+  .text-item {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 48px;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+  }
+
+  .vid-item.active,
+  .text-item.active { opacity: 1; }
+
+  /* English text (right panel) */
+  .en-text .vid-text-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 36px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .en-text .vid-text-eyebrow::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: #c9a96e;
+    flex-shrink: 0;
+  }
+
+  .vid-text-main {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(20px, 2vw, 32px);
+    font-weight: 300;
+    color: #ffffff;
+    line-height: 1.5;
+    margin-bottom: 28px;
+  }
+
+  .vid-text-main em {
+    font-style: italic;
+    color: #c9a96e;
+  }
+
+  /* English text */
+  .en-text .vid-text-main {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 2.2vw, 36px);
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  .en-text .vid-text-main em {
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .en-text .vid-text-eyebrow {
+    justify-content: center;
+  }
+
+  .vid-text-sub {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.2);
+    text-transform: uppercase;
+  }
+
+  /* Chinese text (left panel) */
+  .zh-text .vid-text-main {
+    font-size: clamp(18px, 1.8vw, 28px);
+    line-height: 1.7;
+  }
+
+  /* ── About Section ── */
+  .about-section {
+    background: #0f0f0f;
+    padding-bottom: 100px;
+  }
+
+  .about-photos {
+    display: flex;
+    gap: 3px;
+    align-items: stretch;
+  }
+
+  .about-photo {
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .about-photo.center-photo {
+    flex: 1.1;
+  }
+
+  .about-photo img {
+    width: 100%;
+    height: 68vh;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .about-photo.left-photo img   { object-position: center 32%; }
+  .about-photo.center-photo img { object-position: center center; }
+  .about-photo.right-photo img  { object-position: center 62%; }
+
+  .about-text {
+    max-width: 660px;
+    margin: 72px auto 0;
+    text-align: center;
+    padding: 0 40px;
+  }
+
+  .about-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 28px;
+  }
+
+  .about-bio {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(15px, 1.3vw, 19px);
+    font-weight: 400;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.9;
+    letter-spacing: 0.01em;
+  }
+
+  .about-bio em {
+    font-style: italic;
+    color: #c9a96e;
+  }
+
+  /* ── Platforms Dashboard ── */
+  .platforms-section {
+    background: #0a0a0a;
+    padding: 100px 80px;
+    border-top: 1px solid #1a1a1a;
+  }
+
+  .platforms-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    text-align: center;
+    margin-bottom: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .platforms-eyebrow::before,
+  .platforms-eyebrow::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 1px;
+    background: #c9a96e;
+    opacity: 0.4;
+  }
+
+  .platforms-grid {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 0;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .platform-divider {
+    background: #1e1e1e;
+    margin: 0 60px;
+  }
+
+  .platform-card {
+    padding: 0 60px;
+    text-align: center;
+  }
+
+  .platform-icon {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 20px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .platform-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .platform-name {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 6px;
+  }
+
+  .platform-handle {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 48px;
+    letter-spacing: 0.04em;
+  }
+
+  .platform-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+
+  .platform-stats.two-col {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 300px;
+    margin: 0 auto 40px;
+  }
+
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 3.5vw, 52px);
+    font-weight: 300;
+    color: #c9a96e;
+    line-height: 1;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .platform-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    text-decoration: none;
+    transition: color 0.3s;
+    margin-top: 8px;
+  }
+
+  .platform-link::after {
+    content: '→';
+    color: #c9a96e;
+    transition: transform 0.3s;
+  }
+
+  .platform-link:hover { color: #fff; }
+  .platform-link:hover::after { transform: translateX(4px); }
+
+  /* ── Selected Work ── */
+  .work-section {
+    background: #0f0f0f;
+    padding: 100px 0 0;
+    border-top: 1px solid #1a1a1a;
+  }
+
+  .work-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    text-align: center;
+    margin-bottom: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .work-eyebrow::before,
+  .work-eyebrow::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 1px;
+    background: #c9a96e;
+    opacity: 0.4;
+  }
+
+  .work-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 380px 380px;
+    gap: 3px;
+  }
+
+  .work-item {
+    overflow: hidden;
+    position: relative;
+    cursor: default;
+  }
+
+  .work-item:first-child {
+    grid-row: 1 / 3;
+  }
+
+  .work-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.8s ease;
+  }
+
+  .work-item:hover img {
+    transform: scale(1.04);
+  }
+
+  .work-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 32px 24px 24px;
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .work-item:hover .work-caption {
+    opacity: 1;
+  }
+
+  /* ── Contact ── */
+  .contact-section {
+    background: #080808;
+    border-top: 1px solid #1a1a1a;
+    padding: 80px 80px 48px;
+  }
+
+  .contact-tagline {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(12px, 1.1vw, 16px);
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 0.12em;
+    color: rgba(201,169,110,0.55);
+    margin-bottom: 40px;
+  }
+
+  .contact-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 36px;
+    margin-bottom: 72px;
+  }
+
+  .contact-email {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(15px, 1.5vw, 22px);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .contact-email:hover { color: #c9a96e; }
+
+  .contact-dot {
+    width: 3px;
+    height: 3px;
+    background: #c9a96e;
+    border-radius: 50%;
+    opacity: 0.35;
+    flex-shrink: 0;
+  }
+
+  .contact-social {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+    color: rgba(255,255,255,0.4);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .contact-social:hover { color: #c9a96e; }
+
+  .contact-social svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+  }
+
+  .contact-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #1a1a1a;
+    padding-top: 28px;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.18);
+  }
+
+  /* Scroll-triggered animations */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">East Meets Feed</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#work">Work</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section class="hero">
+
+  <!-- Left: text -->
+  <div class="hero-left">
+    <div class="hero-content">
+      <div class="hero-eyebrow">East Meets Feed</div>
+      <h1 class="hero-name">Yujia</h1>
+      <p class="hero-tagline">Turning drifting into an aesthetic.</p>
+      <p class="hero-tagline hero-tagline-zh">把漂泊活成美學</p>
+    </div>
+
+    <div class="slide-dots" style="position:relative;bottom:auto;left:auto;margin-top:48px;opacity:1;animation:none;">
+      <div class="dot active" onclick="goTo(0)"></div>
+      <div class="dot" onclick="goTo(1)"></div>
+    </div>
+  </div>
+
+  <!-- Right: photos -->
+  <div class="hero-right">
+    <div class="hero-slide slide-1 active"></div>
+    <div class="hero-slide slide-2"></div>
+
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ② Video + Text -->
+<section class="video-section">
+
+  <!-- Left panel: Video 1 (phase 1) + Chinese text (phase 2) -->
+  <div class="vid-panel left-panel">
+    <video id="vid1" class="vid-item active" muted playsinline preload="auto">
+      <source src="Posts assets/Afternoon Sunshine/IMG_8468.MOV" type="video/mp4">
+    </video>
+    <div class="text-item zh-text">
+      <div class="vid-text-main">
+        有的城市，你去看看。<br>
+        <em>紐約，把你留下。</em>
+      </div>
+      <div class="vid-text-sub">Columbia · Senior Data Engineer</div>
+    </div>
+  </div>
+
+  <!-- Right panel: English text (phase 1) + Video 2 (phase 2) -->
+  <div class="vid-panel right-panel">
+    <div class="text-item en-text active">
+      <div class="vid-text-eyebrow">New York City</div>
+      <div class="vid-text-main">
+        Some cities you visit.<br>
+        <em>New York, you become.</em>
+      </div>
+      <div class="vid-text-sub">East Meets Feed</div>
+    </div>
+    <video id="vid2" class="vid-item" muted playsinline preload="auto">
+      <source src="Posts assets/Central Park/IMG_8296.MOV" type="video/mp4">
+    </video>
+  </div>
+
+</section>
+
+<!-- ③ About -->
+<section class="about-section" id="about">
+  <div class="about-photos">
+    <div class="about-photo left-photo">
+      <img src="Posts assets/The Met/IMG_7872.jpg" alt="Yujia at The Met">
+    </div>
+    <div class="about-photo center-photo">
+      <img src="Posts assets/Central Park/IMG_8309.jpg" alt="Yujia in Central Park">
+    </div>
+    <div class="about-photo right-photo">
+      <img src="Posts assets/NJ Afternoon/IMG_8872.jpg" alt="Yujia in New Jersey">
+    </div>
+  </div>
+  <div class="about-text">
+    <div class="about-eyebrow">About</div>
+    <p class="about-bio">Yujia is a content creator and Columbia-trained data engineer based in New York City. Through <em>East Meets Feed</em>, she documents the spaces between logic and light — the quiet hours, the golden streets, the museums that speak without words.</p>
+  </div>
+</section>
+
+<!-- ④ Platforms Dashboard -->
+<section class="platforms-section">
+  <div class="platforms-eyebrow">Platforms</div>
+  <div class="platforms-grid">
+
+    <!-- Instagram -->
+    <div class="platform-card">
+      <div class="platform-icon fade-up" style="transition-delay:0.05s">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5.5"/>
+          <circle cx="12" cy="12" r="4.5"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+      <div class="platform-name fade-up" style="transition-delay:0.1s">Instagram</div>
+      <div class="platform-handle fade-up" style="transition-delay:0.2s">@yujiaaa_xie</div>
+      <div class="platform-stats">
+        <div class="fade-up" style="transition-delay:0.3s">
+          <div class="stat-number" data-count="2355">0</div>
+          <div class="stat-label">Followers</div>
+        </div>
+        <div class="fade-up" style="transition-delay:0.4s">
+          <div class="stat-number" data-count="56">0</div>
+          <div class="stat-label">Posts</div>
+        </div>
+        <div class="fade-up" style="transition-delay:0.5s">
+          <div class="stat-number" data-count="42.9" data-suffix="K">0</div>
+          <div class="stat-label">Monthly Views</div>
+        </div>
+      </div>
+      <a href="https://instagram.com/yujiaaa_xie" class="platform-link fade-up" style="transition-delay:0.6s" target="_blank">View Profile</a>
+    </div>
+
+    <div class="platform-divider"></div>
+
+    <!-- Douyin -->
+    <div class="platform-card">
+      <div class="platform-icon fade-up" style="transition-delay:0.1s">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.84 1.56V6.77a4.85 4.85 0 0 1-1.07-.08z"/>
+        </svg>
+      </div>
+      <div class="platform-name fade-up" style="transition-delay:0.15s">抖音 · Douyin</div>
+      <div class="platform-handle fade-up" style="transition-delay:0.25s">@Xyjjj</div>
+      <div class="platform-stats two-col">
+        <div class="fade-up" style="transition-delay:0.35s">
+          <div class="stat-number" data-count="666">0</div>
+          <div class="stat-label">Followers</div>
+        </div>
+        <div class="fade-up" style="transition-delay:0.45s">
+          <div class="stat-number" data-count="3834">0</div>
+          <div class="stat-label">Likes</div>
+        </div>
+      </div>
+      <a href="https://douyin.com" class="platform-link fade-up" style="transition-delay:0.55s" target="_blank">View Profile</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ⑤ Selected Work -->
+<section class="work-section" id="work">
+  <div class="work-eyebrow fade-up">Selected Work</div>
+  <div class="work-grid">
+
+    <!-- Feature: RH Guesthouse stairs — spans both rows -->
+    <div class="work-item">
+      <img src="Posts assets/RH guesthouse/FullSizeRender3.jpg"
+           alt="RH Guesthouse"
+           style="object-position: center 30%;">
+      <div class="work-caption">RH Guesthouse</div>
+    </div>
+
+    <!-- Row 1, Col 2: Golden hour street -->
+    <div class="work-item">
+      <img src="Posts assets/NJ Afternoon/IMG_8917.jpg"
+           alt="Golden Hour"
+           style="object-position: center 60%;">
+      <div class="work-caption">New Jersey</div>
+    </div>
+
+    <!-- Row 1, Col 3: Restaurant Casa mono -->
+    <div class="work-item">
+      <img src="Posts assets/Casa mono/IMG_9019.jpg"
+           alt="Casa Mono"
+           style="object-position: center 25%;">
+      <div class="work-caption">Casa Mono</div>
+    </div>
+
+    <!-- Row 2, Col 2: Night street motion -->
+    <div class="work-item">
+      <img src="Posts assets/RH guesthouse/IMG_3319.jpg"
+           alt="New York Night"
+           style="object-position: center 30%;">
+      <div class="work-caption">Meatpacking District</div>
+    </div>
+
+    <!-- Row 2, Col 3: The Met -->
+    <div class="work-item">
+      <img src="Posts assets/The Met/IMG_7807.jpg"
+           alt="The Met"
+           style="object-position: center center;">
+      <div class="work-caption">The Metropolitan Museum</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ⑥ Contact -->
+<section class="contact-section" id="contact">
+  <div class="contact-tagline fade-up">
+    Available for work &amp; collaborations — reach out anytime
+  </div>
+
+  <div class="contact-strip fade-up">
+
+    <a href="mailto:bobopoponyu@gmail.com" class="contact-email">
+      bobopoponyu@gmail.com
+    </a>
+
+    <div class="contact-dot"></div>
+
+    <a href="tel:8458009328" class="contact-email">
+      845.800.9328
+    </a>
+
+    <div class="contact-dot"></div>
+
+    <a href="https://instagram.com/yujiaaa_xie" class="contact-social" target="_blank">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5.5"/>
+        <circle cx="12" cy="12" r="4.5"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+      @yujiaaa_xie
+    </a>
+
+    <div class="contact-dot"></div>
+
+    <a href="https://douyin.com" class="contact-social" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.84 1.56V6.77a4.85 4.85 0 0 1-1.07-.08z"/>
+      </svg>
+      抖音 · Douyin
+    </a>
+
+  </div>
+
+  <div class="contact-footer">
+    <span>East Meets Feed</span>
+    <span>© 2026 Yujia Xie</span>
+  </div>
+</section>
+
+<script>
+  // ── Video phase logic ──
+  // Phase 1: vid1 plays (left), EN text visible (right)
+  // Phase 2: vid2 plays (right), ZH text visible (left)
+  // Each video plays its full natural duration before switching.
+
+  const vid1 = document.getElementById('vid1');
+  const vid2 = document.getElementById('vid2');
+  const enText = document.querySelector('.en-text');
+  const zhText = document.querySelector('.zh-text');
+  let switching = false;
+
+  function toPhase2() {
+    if (switching) return;
+    switching = true;
+    vid2.currentTime = 0;
+    vid2.play();
+    vid1.classList.remove('active');
+    enText.classList.remove('active');
+    zhText.classList.add('active');
+    vid2.classList.add('active');
+    setTimeout(() => { vid1.pause(); vid1.currentTime = 0; switching = false; }, 500);
+  }
+
+  function toPhase1() {
+    if (switching) return;
+    switching = true;
+    vid1.currentTime = 0;
+    vid1.play();
+    vid2.classList.remove('active');
+    zhText.classList.remove('active');
+    vid1.classList.add('active');
+    enText.classList.add('active');
+    setTimeout(() => { vid2.pause(); vid2.currentTime = 0; switching = false; }, 500);
+  }
+
+  // ── Scroll animations ──
+  function countUp(el) {
+    const target = parseFloat(el.dataset.count);
+    const suffix = el.dataset.suffix || '';
+    const isDecimal = target % 1 !== 0;
+    const duration = 1400;
+    const start = performance.now();
+    function update(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      const val = target * ease;
+      el.textContent = (isDecimal ? val.toFixed(1) : Math.floor(val).toLocaleString()) + suffix;
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
+        entry.target.querySelectorAll('.stat-number[data-count]').forEach(el => countUp(el));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.platforms-section, .work-section, .contact-section').forEach(el => observer.observe(el));
+
+  vid1.addEventListener('ended', toPhase2);
+  vid2.addEventListener('ended', toPhase1);
+  vid1.play();
+
+  // ── Photo crossfade ──
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.dot');
+  let current = 0;
+  let timer;
+
+  function goTo(index) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    resetTimer();
+  }
+
+  function next() {
+    goTo((current + 1) % slides.length);
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(next, 5500);
+  }
+
+  resetTimer();
+</script>
+</body>
+</html>

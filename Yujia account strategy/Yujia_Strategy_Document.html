@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yujia — Creator Analysis & Content Strategy</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f5f4f0;
+    color: #1a1a1a;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .page {
+    max-width: 880px;
+    margin: 48px auto;
+    background: #fff;
+    padding: 64px 72px;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.07);
+  }
+
+  /* Header */
+  .doc-header {
+    border-bottom: 2px solid #c9a96e;
+    padding-bottom: 28px;
+    margin-bottom: 48px;
+  }
+  .doc-header .label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 10px;
+  }
+  .doc-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .doc-header .meta {
+    font-size: 12px;
+    color: #888;
+  }
+
+  /* TOC */
+  .toc {
+    background: #faf9f7;
+    border: 1px solid #e8e6e0;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+  }
+  .toc-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 12px;
+  }
+  .toc ol {
+    padding-left: 18px;
+  }
+  .toc li {
+    font-size: 13px;
+    color: #3a3a3a;
+    margin-bottom: 5px;
+  }
+  .toc li span {
+    color: #999;
+    margin-left: 6px;
+    font-size: 12px;
+  }
+
+  /* Section titles */
+  h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-top: 56px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e8e6e0;
+  }
+  h2 .part-num {
+    color: #c9a96e;
+    margin-right: 8px;
+  }
+  h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-top: 32px;
+    margin-bottom: 12px;
+  }
+  h4 {
+    font-size: 12px;
+    font-weight: 600;
+    color: #c9a96e;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+  p { color: #3a3a3a; margin-bottom: 10px; }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 13px;
+  }
+  thead tr { background: #1a1a1a; color: #fff; }
+  thead th {
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  tbody tr { border-bottom: 1px solid #f0ede8; }
+  tbody tr:nth-child(even) { background: #faf9f7; }
+  tbody td {
+    padding: 10px 14px;
+    color: #3a3a3a;
+    vertical-align: top;
+  }
+  tbody td:first-child { font-weight: 600; color: #1a1a1a; }
+  .gold-header thead tr { background: #c9a96e; }
+
+  /* Creator comparison */
+  .creator-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .creator-block {
+    background: #faf9f7;
+    border-left: 3px solid #c9a96e;
+    padding: 16px 18px;
+    border-radius: 0 6px 6px 0;
+  }
+  .creator-block .creator-name {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 10px;
+  }
+  .creator-block ul { list-style: none; padding: 0; }
+  .creator-block ul li {
+    font-size: 13px;
+    color: #3a3a3a;
+    margin-bottom: 7px;
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .creator-block ul li::before { content: "—"; position: absolute; left: 0; color: #c9a96e; }
+
+  /* Dark blocks */
+  .dark-block {
+    background: #1a1a1a;
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 16px 0;
+    color: #e0ddd6;
+  }
+  .dark-block .db-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 10px;
+  }
+  .dark-block ul { list-style: none; padding: 0; }
+  .dark-block ul li {
+    font-size: 13px;
+    color: #e0ddd6;
+    margin-bottom: 7px;
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .dark-block ul li::before { content: "→"; position: absolute; left: 0; color: #c9a96e; }
+  .dark-block p { color: #e0ddd6; }
+
+  /* Brand system */
+  .brand-box {
+    background: #1a1a1a;
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin: 20px 0;
+  }
+  .brand-box .bb-item { margin-bottom: 22px; }
+  .brand-box .bb-item:last-child { margin-bottom: 0; }
+  .brand-box .bb-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 6px;
+  }
+  .brand-box .bb-value { font-size: 15px; color: #fff; font-weight: 500; }
+  .brand-box .bb-sub { font-size: 13px; color: #a09d96; margin-top: 4px; line-height: 1.7; }
+
+  /* Audit section */
+  .audit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 20px 0;
+  }
+  .audit-card {
+    border: 1px solid #e8e6e0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .audit-card-header {
+    background: #1a1a1a;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .audit-card-header .platform-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .audit-card-header .platform-handle {
+    font-size: 11px;
+    color: #888;
+  }
+  .audit-card-body { padding: 16px 18px; }
+  .stat-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 14px;
+  }
+  .stat-item { }
+  .stat-num {
+    font-size: 20px;
+    font-weight: 700;
+    color: #c9a96e;
+    line-height: 1;
+  }
+  .stat-label { font-size: 11px; color: #999; margin-top: 2px; }
+  .audit-card-body ul { list-style: none; padding: 0; }
+  .audit-card-body ul li {
+    font-size: 13px;
+    color: #3a3a3a;
+    padding: 6px 0;
+    border-bottom: 1px solid #f5f4f0;
+    line-height: 1.5;
+  }
+  .audit-card-body ul li:last-child { border-bottom: none; }
+  .tag-good { color: #4a9a6e; font-weight: 600; }
+  .tag-bad { color: #c05050; font-weight: 600; }
+
+  /* Data highlight */
+  .data-highlight {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2420 100%);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 20px 0;
+    border-left: 4px solid #c9a96e;
+  }
+  .data-highlight .dh-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 10px;
+  }
+  .data-highlight .dh-big {
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .data-highlight .dh-desc {
+    font-size: 13px;
+    color: #a09d96;
+    line-height: 1.6;
+  }
+
+  /* Action items */
+  .action-list {
+    counter-reset: action-counter;
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+  }
+  .action-list li {
+    counter-increment: action-counter;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+  .action-list li::before {
+    content: counter(action-counter);
+    background: #c9a96e;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .action-list li .action-body { }
+  .action-list li .action-title { font-weight: 600; font-size: 13px; color: #1a1a1a; margin-bottom: 3px; }
+  .action-list li .action-desc { font-size: 13px; color: #666; line-height: 1.5; }
+  .action-list li .action-time {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 4px;
+  }
+
+  /* Platform sections for captions */
+  .platform-section { margin-bottom: 48px; }
+  .platform-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .platform-badge {
+    background: #c9a96e;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+  }
+  .platform-note { font-size: 12px; color: #888; font-style: italic; }
+  .platform-desc { font-size: 13px; color: #666; margin-bottom: 20px; line-height: 1.6; }
+
+  .caption-card {
+    background: #faf9f7;
+    border: 1px solid #e8e6e0;
+    border-radius: 8px;
+    padding: 24px 26px;
+    margin-bottom: 16px;
+  }
+  .caption-card .style-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    margin-bottom: 14px;
+  }
+  .caption-card .content-match {
+    font-size: 11px;
+    color: #888;
+    background: #f0ede8;
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+  .caption-card .caption-body {
+    font-size: 14px;
+    color: #1a1a1a;
+    line-height: 1.9;
+    white-space: pre-line;
+    border-left: 3px solid #e8e6e0;
+    padding-left: 16px;
+    margin-bottom: 14px;
+  }
+  .caption-card .caption-note {
+    font-size: 12px;
+    color: #888;
+    padding-top: 12px;
+    border-top: 1px solid #e8e6e0;
+    font-style: italic;
+    line-height: 1.6;
+  }
+  .caption-card .hashtags {
+    font-size: 12px;
+    color: #c9a96e;
+    margin-top: 10px;
+    line-height: 1.7;
+  }
+
+  /* Formula box */
+  .formula-box {
+    background: #faf9f7;
+    border: 1px solid #c9a96e;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .formula-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    flex-basis: 100%;
+    margin-bottom: 6px;
+  }
+  .formula-item {
+    background: #1a1a1a;
+    color: #e0ddd6;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 16px;
+    border-radius: 20px;
+  }
+  .formula-plus {
+    color: #c9a96e;
+    font-size: 18px;
+    font-weight: 300;
+  }
+  .formula-eq {
+    color: #c9a96e;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .formula-result {
+    background: #c9a96e;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 7px 16px;
+    border-radius: 20px;
+  }
+
+  /* Divider */
+  .divider { border: none; border-top: 1px solid #e8e6e0; margin: 48px 0; }
+
+  /* Footer */
+  .doc-footer {
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 1px solid #e8e6e0;
+    font-size: 11px;
+    color: #aaa;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; margin: 0; padding: 40px 48px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="label">Social Media Strategy Document</div>
+    <h1>Creator Analysis, Account Audit<br>& Content Strategy for Yujia</h1>
+    <div class="meta">East Meets Feed &nbsp;·&nbsp; June 2026 &nbsp;·&nbsp; Instagram / TikTok / Douyin / Xiaohongshu</div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">目錄</div>
+    <ol>
+      <li>Creator 分析：Chiara Ferragni vs 程十安 <span>五大問題框架</span></li>
+      <li>帳號現況審查：IG + Douyin <span>數據診斷 + 問題清單</span></li>
+      <li>立即行動計畫 <span>優先順序排列</span></li>
+      <li>Caption Bank — Week of June 6–12 <span>三平台 × 三風格，共 9 組</span></li>
+    </ol>
+  </div>
+
+
+  <!-- ===== PART 1: CREATOR ANALYSIS ===== -->
+  <h2><span class="part-num">Part 1</span>Creator 分析：Chiara Ferragni vs 程十安</h2>
+  <p>以五大常見創作者問題為框架，分析兩位 benchmark creators，提煉對 Yujia luxury lifestyle 個人品牌的具體啟示。</p>
+
+  <!-- P1 -->
+  <h3>問題一：發內容沒有策略</h3>
+  <p>大多數人發文是隨機的。Benchmark 是清楚知道什麼內容、在哪個平台、用什麼形式、為什麼有效。</p>
+  <div class="creator-grid">
+    <div class="creator-block">
+      <div class="creator-name">Chiara Ferragni</div>
+      <ul>
+        <li>平台語言分工清晰：IG 精修 editorial、Stories 做日常溫度</li>
+        <li>出行公式：預告 → 現場 → 回顧，三段式結構</li>
+        <li>視覺簽名固定：暖金色調、義大利場景、effortless chic</li>
+        <li>比例：70% 生活質感、20% 品牌合作、10% 個人/家庭</li>
+      </ul>
+    </div>
+    <div class="creator-block">
+      <div class="creator-name">程十安</div>
+      <ul>
+        <li>XHS 為主戰場，每篇都是完整視覺敘事，不是隨手拍</li>
+        <li>用「場景帶情緒」，不是直接說「我在哪裡做了什麼」</li>
+        <li>XHS 做深度圖文，微博做人設延伸，分工清晰</li>
+        <li>每篇都有明確的情緒目標：嚮往感、共鳴感、或安靜感</li>
+      </ul>
+    </div>
+  </div>
+  <div class="dark-block">
+    <div class="db-label">Yujia 的策略框架</div>
+    <ul>
+      <li>XHS：高質感圖文，場景敘事，讓人想「活進去」這個畫面</li>
+      <li>IG：視覺宣言，東西方美學的交叉點，靜態 + Reels 並行</li>
+      <li>TikTok / Douyin：有呼吸感的生活切片，氛圍感優先於資訊量</li>
+    </ul>
+  </div>
+
+  <!-- P2 -->
+  <h3>問題二：發完文就消失</h3>
+  <p>發文後消失是流量死路。關鍵是設計一套符合品牌調性的持續互動策略，而不是大量刷留言。</p>
+  <div class="creator-grid">
+    <div class="creator-block">
+      <div class="creator-name">Chiara Ferragni</div>
+      <ul>
+        <li>選擇性回覆，維護 luxury 距離感</li>
+        <li>Stories 是親近感出口：投票、問答、日常瑣事</li>
+        <li>策略性與其他 luxury creator 互動，是品牌行為不是流量操作</li>
+      </ul>
+    </div>
+    <div class="creator-block">
+      <div class="creator-name">程十安</div>
+      <ul>
+        <li>Caption 寫得像日記，粉絲自然想回應，互動設計在內容裡</li>
+        <li>回覆留言語氣像朋友，不像 KOL 在履行義務</li>
+        <li>讓自己的內容成為值得停留的地方，而不是去別人那裡刷存在感</li>
+      </ul>
+    </div>
+  </div>
+  <div class="dark-block">
+    <div class="db-label">Yujia 的互動策略</div>
+    <ul>
+      <li>Caption 設計成「開放式獨白」，讓人想接話（例：「在紐約待了三年，還是有些東西讓我不習慣——」）</li>
+      <li>發文後 30 分鐘內回覆前幾條有內容的留言，不只是按愛心</li>
+      <li>Stories 做輕互動：投票、問答，降低距離感但不稀釋主頁質感</li>
+    </ul>
+  </div>
+
+  <!-- P3 -->
+  <h3>問題三：內容只用一次</h3>
+  <p>每篇貼文當成獨立單位是浪費。Benchmark 是把一個體驗變成跨平台、多角度的內容系統。</p>
+  <div class="creator-grid">
+    <div class="creator-block">
+      <div class="creator-name">Chiara Ferragni</div>
+      <ul>
+        <li>一趟旅行 = 預告 + 現場多篇 + 穿搭 + 晚宴 + 回顧，8–10 篇</li>
+        <li>同一張照片：主頁靜態 + Stories 花絮 + Reels 動態版本</li>
+      </ul>
+    </div>
+    <div class="creator-block">
+      <div class="creator-name">程十安</div>
+      <ul>
+        <li>一個場景拍一次，出來三四種不同構圖和情緒</li>
+        <li>同樣是「在咖啡廳」：孤獨美學 / 品味推薦 / 穿搭背景，角度不同即是獨立內容</li>
+      </ul>
+    </div>
+  </div>
+  <div class="dark-block">
+    <div class="db-label">Yujia 的拆解框架（以 The Met 為例）</div>
+    <ul>
+      <li>XHS：「為什麼這裡讓我想起了中國某個地方」（文化橋樑）</li>
+      <li>IG 靜態：氛圍感照片 + 極簡 caption（視覺宣言）</li>
+      <li>TikTok：60 秒 vlog，有音樂有節奏（生活切片）</li>
+      <li>IG Stories：建築細節、光線、入場券（親近感）</li>
+    </ul>
+  </div>
+
+  <!-- P4 -->
+  <h3>問題四：有發內容，但沒有「被記住」</h3>
+  <p>沒有品牌系統，內容就消失在 feed 裡。目標是讓你的受眾在想到某種特定感覺時，第一個想到你。</p>
+  <div class="creator-grid">
+    <div class="creator-block">
+      <div class="creator-name">Chiara Ferragni</div>
+      <ul>
+        <li>記憶點：眼睛 logo + 從部落客變品牌的創業故事</li>
+        <li>三大主軸：Style / Personal Life / Business</li>
+        <li>被記住的原因：她的人生就是她的內容，沒有距離感</li>
+      </ul>
+    </div>
+    <div class="creator-block">
+      <div class="creator-name">程十安</div>
+      <ul>
+        <li>記憶點：「我也想活成這樣」的嚮往感——不是羨慕，是共鳴</li>
+        <li>視覺語言極度一致，看到畫面就知道是她</li>
+        <li>被記住的原因：她的美學有辨識度，不是跟風，是自己的系統</li>
+      </ul>
+    </div>
+  </div>
+  <div class="brand-box">
+    <div class="bb-item">
+      <div class="bb-label">Yujia 一句話定位</div>
+      <div class="bb-value">在東方與西方之間，活出只屬於自己的美學</div>
+    </div>
+    <div class="bb-item">
+      <div class="bb-label">三大內容主軸</div>
+      <div class="bb-sub">
+        1. 文化橋樑 — 東西方生活方式的對比、融合與觀察<br>
+        2. 質感日常 — 紐約 × 亞洲美學交織的生活切片<br>
+        3. 個人敘事 — 一個在國際間找到自我的女性故事
+      </div>
+    </div>
+    <div class="bb-item" style="margin-bottom:0">
+      <div class="bb-label">差異點</div>
+      <div class="bb-sub">中國女性 × 紐約生活 × 文學感審美 — 這個交叉點在市場上是稀缺的</div>
+    </div>
+  </div>
+
+  <!-- P5 -->
+  <h3>問題五：短影音做出來沒流量</h3>
+  <p>短影音需要特定的內容邏輯：2 秒內的視覺 hook、提升完播率的結構、以及強化品牌感的音樂策略。</p>
+  <div class="creator-grid">
+    <div class="creator-block">
+      <div class="creator-name">Chiara Ferragni</div>
+      <ul>
+        <li>開頭 2 秒：最美的那一幀直接上，不介紹自己</li>
+        <li>長度：穿搭類 15–30 秒，生活/旅行類 60–90 秒</li>
+        <li>音樂：trending 但符合 aspirational 情緒，不用搞笑音效</li>
+      </ul>
+    </div>
+    <div class="creator-block">
+      <div class="creator-name">程十安</div>
+      <ul>
+        <li>勝在節奏感：慢切、有呼吸、每一幀都是壁紙</li>
+        <li>Hook 是視覺本身，不靠文字或開口說話</li>
+        <li>完播率高的原因：看完想再看，因為美</li>
+      </ul>
+    </div>
+  </div>
+  <div class="dark-block">
+    <div class="db-label">Yujia 的短影音框架</div>
+    <ul>
+      <li>用最美的畫面開場，不說「大家好我是 Yujia」</li>
+      <li>Luxury 的剪輯節奏是慢的、有留白的——這是跟大多數 creator 最明顯的差異</li>
+      <li>長度：日常 30–45 秒，文化主題 60–90 秒</li>
+      <li>音樂：選在中英文圈都有共鳴的音樂，強化 East Meets West 品牌感</li>
+    </ul>
+  </div>
+
+  <!-- Summary table -->
+  <h3>五問題總結</h3>
+  <table class="gold-header">
+    <thead>
+      <tr><th>問題</th><th>Chiara</th><th>程十安</th><th>Yujia 行動</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1. 無策略</td><td>三段式敘事 + 視覺公式</td><td>場景帶情緒</td><td>三平台各有獨立語言</td></tr>
+      <tr><td>2. 發完消失</td><td>Stories 做溫度</td><td>Caption 像日記</td><td>開放式獨白 + 30min 回覆</td></tr>
+      <tr><td>3. 只用一次</td><td>一趟旅行 = 10 篇</td><td>一場景 = 多情緒</td><td>一素材拆四個角度</td></tr>
+      <tr><td>4. 沒被記住</td><td>人生即內容</td><td>視覺語言一致</td><td>三大主軸 + 視覺簽名</td></tr>
+      <tr><td>5. 短影音無流量</td><td>最美畫面開場</td><td>慢節奏每幀是壁紙</td><td>Luxury 呼吸感節奏</td></tr>
+    </tbody>
+  </table>
+
+
+  <hr class="divider">
+
+
+  <!-- ===== PART 2: ACCOUNT AUDIT ===== -->
+  <h2><span class="part-num">Part 2</span>帳號現況審查</h2>
+  <p>基於 Instagram (@yujiaaa_xie) 與 Douyin (@Xyjjj) 的實際帳號數據，診斷現況並找出最高優先級的改善點。</p>
+
+  <div class="audit-grid">
+    <div class="audit-card">
+      <div class="audit-card-header">
+        <div>
+          <div class="platform-name">Instagram</div>
+          <div class="platform-handle">@yujiaaa_xie</div>
+        </div>
+      </div>
+      <div class="audit-card-body">
+        <div class="stat-row">
+          <div class="stat-item"><div class="stat-num">2,368</div><div class="stat-label">粉絲</div></div>
+          <div class="stat-item"><div class="stat-num">53</div><div class="stat-label">貼文</div></div>
+          <div class="stat-item"><div class="stat-num">56</div><div class="stat-label">最高單篇讚數</div></div>
+        </div>
+        <ul>
+          <li><span class="tag-good">✓</span> 視覺素材品質高，有進入 luxury 場景的能力</li>
+          <li><span class="tag-good">✓</span> 有 The Met、rooftop bar、Bulgari 廣場等真實背景</li>
+          <li><span class="tag-good">✓</span> 本人頭像，建立真實感</li>
+          <li><span class="tag-bad">✗</span> Bio 只有「Personal blog」，零品牌資訊</li>
+          <li><span class="tag-bad">✗</span> 格狀圖視覺不一致：暗調 / 畢業照 / 夜店群照混在一起</li>
+          <li><span class="tag-bad">✗</span> Highlights 只有 emoji，無法建立第一印象</li>
+          <li><span class="tag-bad">✗</span> Caption 風格不統一，沒有品牌聲音</li>
+        </ul>
+      </div>
+    </div>
+    <div class="audit-card">
+      <div class="audit-card-header">
+        <div>
+          <div class="platform-name">Douyin</div>
+          <div class="platform-handle">@Xyjjj</div>
+        </div>
+      </div>
+      <div class="audit-card-body">
+        <div class="stat-row">
+          <div class="stat-item"><div class="stat-num">270</div><div class="stat-label">粉絲</div></div>
+          <div class="stat-item"><div class="stat-num">11</div><div class="stat-label">作品</div></div>
+          <div class="stat-item"><div class="stat-num">916</div><div class="stat-label">最高單篇讚數</div></div>
+        </div>
+        <ul>
+          <li><span class="tag-good">✓</span> 文字能力強，標題有文學性和詩意</li>
+          <li><span class="tag-good">✓</span> 內容美學比 IG 更一致，cinematic 感強</li>
+          <li><span class="tag-good">✓</span> 916 讚的美術館影片已證明爆款公式</li>
+          <li><span class="tag-bad">✗</span> 頭像是動漫插畫，與 lifestyle 內容完全割裂</li>
+          <li><span class="tag-bad">✗</span> Bio 提到 Healthcare，模糊品牌定位</li>
+          <li><span class="tag-bad">✗</span> 帳號名 Xyjjj 不與 IG 統一，無法跨平台被找到</li>
+          <li><span class="tag-bad">✗</span> 11 支影片發布頻率太低，公式已驗證但未放大</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- The big data insight -->
+  <div class="data-highlight">
+    <div class="dh-label">最關鍵的數據發現</div>
+    <div class="dh-big">79%</div>
+    <div class="dh-desc">
+      Douyin 全帳號 1,702 個讚，有 1,349 個來自兩支影片：<br>
+      美術館背影（「我擅長感受 卻拙於表達」）916 讚 + The Met 皮衣 433 讚<br><br>
+      <strong style="color:#c9a96e">這兩支的共同公式已經非常清晰：</strong>
+    </div>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-label">Yujia 的爆款公式（已被數據驗證）</div>
+    <span class="formula-item">文化 / 美學場所</span>
+    <span class="formula-plus">+</span>
+    <span class="formula-item">cinematic 構圖（背影或側面）</span>
+    <span class="formula-plus">+</span>
+    <span class="formula-item">一句有詩意的中文標題</span>
+    <span class="formula-eq">=</span>
+    <span class="formula-result">高完播率 + 高讚數</span>
+  </div>
+
+  <p style="font-size:13px; color:#666; font-style:italic;">她已經找到自己的公式，但目前只發生了兩次。接下來的工作是把這個公式系統化複製，而不是繼續隨機發文。</p>
+
+  <!-- Cross-platform comparison -->
+  <h3>雙平台對比</h3>
+  <table>
+    <thead>
+      <tr><th>維度</th><th>Instagram</th><th>Douyin</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>粉絲基數</td><td>2,368（較成熟）</td><td>270（早期）</td></tr>
+      <tr><td>內容質感</td><td>參差，視覺不統一</td><td>更一致，氛圍感強</td></tr>
+      <tr><td>最高單篇</td><td>~56 讚</td><td>916 讚（高 16 倍）</td></tr>
+      <tr><td>文字風格</td><td>幾乎沒有品牌聲音</td><td>文學性強，是天然優勢</td></tr>
+      <tr><td>帳號名</td><td>yujiaaa_xie</td><td>Xyjjj（不統一）</td></tr>
+      <tr><td>頭像</td><td>本人（正確）</td><td>動漫插畫（需換）</td></tr>
+      <tr><td>Bio</td><td>Personal blog（空洞）</td><td>提到 Healthcare（模糊）</td></tr>
+    </tbody>
+  </table>
+
+
+  <hr class="divider">
+
+
+  <!-- ===== PART 3: ACTION PLAN ===== -->
+  <h2><span class="part-num">Part 3</span>立即行動計畫</h2>
+  <p>按優先順序排列，標注預計所需時間。</p>
+
+  <ol class="action-list">
+    <li>
+      <div class="action-body">
+        <div class="action-time">5 分鐘內可完成</div>
+        <div class="action-title">換 Douyin 頭像</div>
+        <div class="action-desc">把動漫插畫換成本人照片。新訪客看到帳號第一秒就失去信任感，這是最快的修復。用與 IG 相似的照片風格，建立跨平台視覺一致性。</div>
+      </div>
+    </li>
+    <li>
+      <div class="action-body">
+        <div class="action-time">10 分鐘內可完成</div>
+        <div class="action-title">改兩個平台的 Bio</div>
+        <div class="action-desc">
+          IG 建議：<em>nyc life · east meets west · 在兩個世界之間找美學</em><br>
+          Douyin 建議：<em>紐約 · 從加州到紐約的東方女孩 · 我擅長感受，卻拙於表達</em>（引用她最高讚的標題，形成記憶點）
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="action-body">
+        <div class="action-time">本週執行</div>
+        <div class="action-title">統一跨平台帳號名</div>
+        <div class="action-desc">建議統一使用 <em>yujiaaa_xie</em> 或創建一個更具品牌感的名字（如 <em>eastmeetsfeed.yujia</em>）。讓粉絲能在一個平台發現她後，輕鬆找到其他平台。</div>
+      </div>
+    </li>
+    <li>
+      <div class="action-body">
+        <div class="action-time">本週執行</div>
+        <div class="action-title">清理 IG 格狀圖的視覺雜訊</div>
+        <div class="action-desc">把畢業照、夜店群照、純個人紀錄類內容移到 Archive 或 Highlights。主頁保留最能代表 East Meets Feed 美學的照片——暗調氛圍感、luxury 場所、質感日常。主頁是陌生人的第一印象，不是個人相冊。</div>
+      </div>
+    </li>
+    <li>
+      <div class="action-body">
+        <div class="action-time">持續執行</div>
+        <div class="action-title">系統化複製爆款公式</div>
+        <div class="action-desc">接下來的 Douyin / IG Reels：文化美學場所（美術館、畫廊、建築空間、書店、精品咖啡廳）+ cinematic 構圖（背影、側面、光影）+ 一句有詩意的中文標題。這個公式已被 916 讚和 433 讚驗證——不需要再實驗，直接放大。</div>
+      </div>
+    </li>
+    <li>
+      <div class="action-body">
+        <div class="action-time">建立習慣</div>
+        <div class="action-title">確立固定視覺色調</div>
+        <div class="action-desc">挑選一個 LUT 或後製預設，所有照片和影片統一套用。目標是讓人在 feed 上滾動時，看到畫面就認出是 Yujia，不需要看帳號名。她現有最強的色調是暗調暖色系（像 56 讚那張）。</div>
+      </div>
+    </li>
+  </ol>
+
+
+  <hr class="divider">
+
+
+  <!-- ===== PART 4: CAPTION BANK ===== -->
+  <h2><span class="part-num">Part 4</span>Caption Bank — Week of June 6–12, 2026</h2>
+  <p>根據 Yujia 的實際帳號數據、已驗證的爆款公式、以及她本人的文字風格（「我擅長感受 卻拙於表達」）設計。每個平台三組，風格各異，作為參考模板——根據當週實際內容調整細節，保留情緒框架。</p>
+
+
+  <!-- INSTAGRAM -->
+  <div class="platform-section">
+    <div class="platform-header">
+      <span class="platform-badge">Instagram</span>
+      <span class="platform-note">English-led / bilingual · short · aspirational · no hashtag dependence</span>
+    </div>
+    <p class="platform-desc">IG 的受眾以海外華人 + 英語受眾為主。Caption 要短——視覺說話，文字只是點睛。她的 56 讚最高讚貼文有文字疊加，說明受眾對有情緒的文字有反應。</p>
+
+    <div class="caption-card">
+      <div class="style-tag">Style A — Cinematic / Poetic</div>
+      <div class="content-match">適合：城市街景、獨自一人的靜態時刻、背影構圖</div>
+      <div class="caption-body">somewhere between two worlds —
+and perfectly at home in neither.
+
+that's where I find the most beautiful things.
+
+在兩個世界之間漂著
+反而找到了只屬於自己的地方。</div>
+      <div class="caption-note">Hook 在第一行。中英文並排強化 East Meets West 身份。不解釋、不說明，留白讓受眾自己填入情緒。</div>
+    </div>
+
+    <div class="caption-card">
+      <div class="style-tag">Style B — Visual Moment</div>
+      <div class="content-match">適合：黃昏光線、The Met 或美術館、暖色調場景</div>
+      <div class="caption-body">golden hour in New York hits different
+when you're quietly craving lantern light.
+
+紐約的黃昏，讓我想起燈籠的光。</div>
+      <div class="caption-note">具體場景感，East-West 情緒不需要明說——「黃昏」和「燈籠的光」這兩個意象本身就完成了。短，有畫面，易被記住。</div>
+    </div>
+
+    <div class="caption-card">
+      <div class="style-tag">Style C — Personal Statement</div>
+      <div class="content-match">適合：穿搭照、品牌合作、自信時刻</div>
+      <div class="caption-body">built my taste across two cultures.
+wearing it every single day.
+
+兩種文化塑造了我的審美。
+每天都在穿著它。</div>
+      <div class="caption-note">「wearing it」可以是穿搭，也可以是身份——這個雙關讓 caption 超越 outfit post 的層次。適合想帶出品牌合作或個人風格主張的貼文。</div>
+    </div>
+  </div>
+
+
+  <!-- TIKTOK / DOUYIN -->
+  <div class="platform-section">
+    <div class="platform-header">
+      <span class="platform-badge">TikTok / Douyin</span>
+      <span class="platform-note">文學感中文標題 · 一句話 · 不解釋 · 讓影像說話</span>
+    </div>
+    <p class="platform-desc">她在 Douyin 的標題風格已經非常強——「我擅長感受 卻拙於表達」這種短句式、留白式的語言是她最大的差異化武器。Caption 要跟這個風格保持一致，不要變成說明文。</p>
+
+    <div class="caption-card">
+      <div class="style-tag">Style A — 留白詩句（延續爆款公式）</div>
+      <div class="content-match">適合：美術館、畫廊、建築空間、從背後拍的 cinematic 影片</div>
+      <div class="caption-body">我不擅長到達
+卻總是喜歡途中的光</div>
+      <div class="caption-note">直接複製 916 讚那支的語言邏輯：短、有詩意、不說明場景、留大量想象空間。這種標題在 Douyin 算法裡完播率高，因為人想反覆看才能「懂」它。</div>
+    </div>
+
+    <div class="caption-card">
+      <div class="style-tag">Style B — 身份共鳴</div>
+      <div class="content-match">適合：NYC 街景、城市切片 vlog、東西方對比感的場景</div>
+      <div class="caption-body">有時候紐約的光
+讓我想起很遠的地方
+
+分不清是鄉愁
+還是只是喜歡這種感覺</div>
+      <div class="caption-note">「分不清」是情緒的不確定性，這在 Douyin 的海外華人受眾中共鳴極強。不說明「很遠的地方」是哪裡，反而讓每個人都能代入自己的版本。</div>
+    </div>
+
+    <div class="caption-card">
+      <div class="style-tag">Style C — 文化觀察</div>
+      <div class="content-match">適合：旅行轉場、飛機窗外、JFK 機場、回國或出發的時刻</div>
+      <div class="caption-body">每次出發
+都覺得自己是兩個地方的人
+
+每次抵達
+都覺得自己哪裡都不完全屬於
+
+但也許這就是
+最自由的狀態</div>
+      <div class="caption-note">三段式結構製造情緒節奏，最後一句翻轉——從「不完整」到「自由」。這個情緒弧線在 Douyin 完播率高，因為人想看到最後那個解答。直接呼應她的 East Meets Feed 品牌核心。</div>
+    </div>
+  </div>
+
+
+  <!-- XIAOHONGSHU -->
+  <div class="platform-section">
+    <div class="platform-header">
+      <span class="platform-badge">小紅書 XHS</span>
+      <span class="platform-note">中文主導 · 日記感 · 有細節 · 邀請互動</span>
+    </div>
+    <p class="platform-desc">XHS 的受眾期待「帶她們進入這個生活」。Caption 要比 Douyin 長一些，有場景感、有細節、有一個開放式結尾邀請留言。收藏和留言是 XHS 最重要的互動指標。</p>
+
+    <div class="caption-card">
+      <div class="style-tag">Style A — 氛圍感場景（高收藏潛力）</div>
+      <div class="content-match">適合：咖啡廳、書店、美術館、任何有光線感的室內空間</div>
+      <div class="caption-body">在紐約住了三年，終於找到了讓我想起上海的那種慢。
+
+不是景點，不是網紅打卡點。
+是一個轉角的光線，和剛好合適的溫度。
+
+說不清楚為什麼，但走進去的那一秒就知道了。
+這個地方懂我。
+
+📍附地址在評論區，給同樣在找這種感覺的你。</div>
+      <div class="caption-note">「懂我」是 XHS 最高頻的情緒共鳴詞。把地址放評論區是 XHS 標準操作，能增加留言互動數，同時讓主文保持乾淨。</div>
+      <div class="hashtags">#紐約生活 #異鄉生活 #氛圍感 #東方美學 #在紐約的中國女孩 #NYC咖啡廳</div>
+    </div>
+
+    <div class="caption-card">
+      <div class="style-tag">Style B — 文化身份（高留言潛力）</div>
+      <div class="content-match">適合：個人故事、身份認同主題、回國或在美的日常觀察</div>
+      <div class="caption-body">有人問我：你覺得自己更像中國人還是美國人？
+
+我想了很久。
+
+最後說：我是 East Meets Feed 的人。
+
+兩個文化給了我雙倍的美學語言。
+用它們活著，比選擇一個更有意思。
+
+你們也有這種感覺嗎？還是你找到了一個讓自己完整的答案？👇</div>
+      <div class="caption-note">最後的問題設計成邀請留言，提高互動率。把「East Meets Feed」作為個人品牌記憶點自然帶出，而不是強行植入。</div>
+      <div class="hashtags">#身份認同 #海外生活 #文化差異 #在美國的中國人 #eastmeetswest #留學生活</div>
+    </div>
+
+    <div class="caption-card">
+      <div class="style-tag">Style C — 輕種草 + 生活方式（高分享潛力）</div>
+      <div class="content-match">適合：穿搭 + 城市場景的混搭內容、luxury 日常</div>
+      <div class="caption-body">今天的紐約有點上海的感覺。
+
+說不清楚為什麼。
+可能是空氣，可能是那個光，
+可能是因為我帶著自己走到哪裡，哪裡就有點像家。
+
+穿搭是「如果我住在有大理石門廊的上海舊公寓」的幻想系。
+細節在評論區 🤍</div>
+      <div class="caption-note">第一段是詩意場景，最後一句是輕鬆的，這種節奏轉換讓內容有層次感、不沉重。「幻想系」這個詞在 XHS 穿搭圈有高搜索量。</div>
+      <div class="hashtags">#今日穿搭 #紐約穿搭 #氛圍感穿搭 #文藝風 #東方美學 #輕奢穿搭</div>
+    </div>
+  </div>
+
+
+  <!-- Usage guide -->
+  <h3>Caption 使用說明</h3>
+  <p>這是參考模板，不是固定腳本。保留情緒框架，把具體場景和細節換成當週真實發生的內容，效果最好。</p>
+
+  <table class="gold-header" style="margin-top:16px">
+    <thead>
+      <tr><th>平台</th><th>Style</th><th>最適合的內容類型</th><th>核心情緒</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>IG A</td><td>Cinematic / Poetic</td><td>城市街景、背影構圖</td><td>身份認同、漂泊感</td></tr>
+      <tr><td>IG B</td><td>Visual Moment</td><td>黃昏光線、美術館</td><td>East-West 視覺意象</td></tr>
+      <tr><td>IG C</td><td>Personal Statement</td><td>穿搭、品牌合作</td><td>自信、個人審美主張</td></tr>
+      <tr><td>Douyin A</td><td>留白詩句</td><td>美術館、建築、背影</td><td>感受力、詩意</td></tr>
+      <tr><td>Douyin B</td><td>身份共鳴</td><td>NYC 街景、城市切片</td><td>鄉愁 + 嚮往並存</td></tr>
+      <tr><td>Douyin C</td><td>文化觀察</td><td>旅行轉場、飛機窗外</td><td>自由感、身份釋然</td></tr>
+      <tr><td>XHS A</td><td>氛圍感場景</td><td>咖啡廳、書店、美術館</td><td>「懂我」共鳴</td></tr>
+      <tr><td>XHS B</td><td>文化身份</td><td>個人故事、觀察文</td><td>跨文化認同</td></tr>
+      <tr><td>XHS C</td><td>輕種草</td><td>穿搭 + 城市氛圍</td><td>生活方式嚮往</td></tr>
+    </tbody>
+  </table>
+
+
+  <!-- Footer -->
+  <div class="doc-footer">
+    <span>Yujia — East Meets Feed &nbsp;·&nbsp; Social Media Strategy</span>
+    <span>June 2026</span>
+  </div>
+
+</div>
+</body>
+</html>
