@@ -721,6 +721,116 @@
     color: rgba(255,255,255,0.18);
   }
 
+  /* ── Mobile Responsive ── */
+  @media (max-width: 768px) {
+
+    /* Nav */
+    .nav {
+      padding: 20px 24px;
+    }
+    .nav-links {
+      gap: 20px;
+    }
+
+    /* Hero: stack — photo full screen, text overlays bottom */
+    .hero {
+      flex-direction: column;
+      position: relative;
+    }
+    .hero-left {
+      width: 100%;
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      z-index: 10;
+      background: linear-gradient(to top, rgba(10,10,10,0.92) 0%, transparent 100%);
+      padding: 40px 28px 48px;
+    }
+    .hero-left::after { display: none; }
+    .hero-right {
+      width: 100%;
+      height: 100vh;
+    }
+    .hero-name {
+      font-size: clamp(52px, 14vw, 80px);
+    }
+
+    /* Video section: stack vertically */
+    .video-section {
+      flex-direction: column;
+      height: auto;
+    }
+    .vid-panel {
+      width: 100%;
+      height: 60vh;
+    }
+    .vid-panel.right-panel::before { display: none; }
+    .text-item {
+      padding: 36px 28px;
+    }
+    .vid-text-main {
+      font-size: clamp(18px, 5vw, 26px);
+    }
+
+    /* About: single center photo */
+    .about-photo.left-photo,
+    .about-photo.right-photo {
+      display: none;
+    }
+    .about-photo img {
+      height: 55vh;
+    }
+    .about-text {
+      padding: 0 24px;
+      margin-top: 48px;
+    }
+    .about-bio {
+      font-size: 15px;
+    }
+
+    /* Platforms: stack vertically */
+    .platforms-section {
+      padding: 72px 28px;
+    }
+    .platforms-grid {
+      grid-template-columns: 1fr;
+    }
+    .platform-divider {
+      height: 1px;
+      margin: 48px 0;
+    }
+    .platform-card {
+      padding: 0;
+    }
+
+    /* Work grid: 2 cols, shorter rows */
+    .work-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 260px 260px 260px;
+    }
+    .work-item:first-child {
+      grid-row: 1 / 2;
+      grid-column: 1 / 3;
+    }
+
+    /* Contact */
+    .contact-section {
+      padding: 60px 24px 40px;
+    }
+    .contact-strip {
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+    .contact-dot {
+      display: none;
+    }
+    .contact-footer {
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+    }
+  }
+
   /* Scroll-triggered animations */
   .fade-up {
     opacity: 0;
